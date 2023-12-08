@@ -5,14 +5,13 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 import streamlit as st
 from PIL import Image
-import plotly.graph_objects as go
 
 # Load the model
 model = joblib.load(open("model-v1.joblib", "rb"))
 
 # Data preprocessing function
 def data_preprocessor(df):
-    df.wine_type = df.wine_type.map({'white': 0, 'red': 1})
+    df['Wine Type'] = df['Wine Type'].map({'white': 0, 'red': 1})
     return df
 
 # Visualization function for confidence level
@@ -97,37 +96,6 @@ st.sidebar.markdown(
     """, unsafe_allow_html=True
 )
 st.sidebar.table(user_input_df.style.format({col: "{:.2f}" for col in user_input_df.columns}))
-
-# Create sparklines using plotly
-for col in user_input_df.columns:
-    min_val = user_input_df[col].min()
-    max_val = user_input_df[col].max()
-
-    # Normalize values for the sparkline
-    normalized_values = (user_input_df[col] - min_val) / (max_val - min_val)
-
-    # Create a sparkline using plotly
-    sparkline_fig = go.FigureWidget(
-        go.Scatter(
-            x=user_input_df.index,
-            y=normalized_values,
-            mode='lines+markers',
-            line=dict(color='royalblue', width=2),
-            marker=dict(color='red', size=6),
-        )
-    )
-
-    # Update the layout for better visualization
-    sparkline_fig.update_layout(
-        showlegend=False,
-        margin=dict(t=0, b=0, l=0, r=0),
-        height=50,
-        xaxis=dict(showgrid=False, zeroline=False),
-        yaxis=dict(showgrid=False, zeroline=False, range=[0, 1]),
-    )
-
-    st.sidebar.write(f"**{col.capitalize()} Sparkline**")
-    st.sidebar.plotly_chart(sparkline_fig)
 
 st.subheader('User Input parameters:')
 st.write(user_input_df)
