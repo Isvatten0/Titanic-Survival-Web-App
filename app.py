@@ -15,10 +15,13 @@ def data_preprocessor(df):
     return df
 
 # Visualization function for confidence level
-def visualize_confidence_level(prediction_proba):
+def visualize_confidence_level(prediction_proba, wine_type):
+    # Define color based on wine type
+    color = '#eeece1' if wine_type == 'white' else '#dc143c'  # Cream or Crimson
+
     data = (prediction_proba[0] * 100).round(2)
     grad_percentage = pd.DataFrame(data=data, columns=['Percentage'], index=['Low', 'Ave', 'High'])
-    ax = grad_percentage.plot(kind='barh', figsize=(7, 4), color='#722f37', zorder=10, width=0.5)
+    ax = grad_percentage.plot(kind='barh', figsize=(7, 4), color=color, zorder=10, width=0.5)
     ax.legend().set_visible(False)
     ax.set_xlim(xmin=0, xmax=100)
     
@@ -86,21 +89,26 @@ def get_user_input():
 user_input_df = get_user_input()
 processed_user_input = data_preprocessor(user_input_df)
 
+# Custom styling for the sidebar table
 st.sidebar.subheader('Current User Input:')
 st.sidebar.markdown(
     """
     <style>
-        .table th { background-color: #2c3e50; color: #ecf0f1; }
-        .table td { background-color: #ecf0f1; }
+        .sidebar-table th { background-color: #2c3e50; color: #ecf0f1; text-align: center; }
+        .sidebar-table td { background-color: #ecf0f1; text-align: center; }
     </style>
     """, unsafe_allow_html=True
 )
-st.sidebar.table(user_input_df.style.format({col: "{:.2f}" for col in user_input_df.columns}))
+# Display the table in the sidebar
+st.sidebar.table(user_input_df.rename_axis(None, axis=1))
 
 st.subheader('User Input parameters:')
-st.write(user_input_df)
+# Display the table in the main content area
+st.table(user_input_df.rename_axis(None, axis=1))
 
 prediction = model.predict(processed_user_input)
 prediction_proba = model.predict_proba(processed_user_input)
 
-visualize_confidence_level(prediction_proba)
+wine_type = user_input_df['Wine Type'].values[0]  # Assuming you have 'Wine Type' column in user_input_df
+visualize_confidence_level(prediction_proba, wine_type)
+
