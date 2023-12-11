@@ -57,6 +57,7 @@ page_bg_img = """
     opacity: 0.9;
     background: linear-gradient(135deg, #1a6abf55 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(225deg, #1a6abf 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(315deg, #1a6abf55 25%, transparent 25%) 0px 0/ 14px 14px, linear-gradient(45deg, #1a6abf 25%, #10478a 25%) 0px 0/ 14px 14px;
     text-align: center; /* Center-align the text */
+    color: #ffffff; 
 }
 
 h1 {
@@ -215,7 +216,7 @@ st.markdown("""
 # How to Use Section
 st.write("""
 ## How to Use
-Welcome to the Titanic Survival Prediction app! This app helps you predict the likelihood of survival for Titanic passengers based on their characteristics.
+Welcome to the Titanic Survival Prediction app! This app helps you predict the likelihood of survival for Titanic passengers based on their characteristics. For optimal clarity, have your computer in dark mode.
 """)
 
 # Input Parameters Instructions
