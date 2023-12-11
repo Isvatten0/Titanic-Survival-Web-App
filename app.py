@@ -5,110 +5,212 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 import streamlit as st
 from PIL import Image
+import seaborn as sns
 
 # Load the model
 model = joblib.load(open("model-v1.joblib", "rb"))
 
 # Data preprocessing function
 def data_preprocessor(df):
-    df['Wine Type'] = df['Wine Type'].map({'white': 0, 'red': 1})
+    df['Sex'] = df['Sex'].map({'Male': 0, 'Female': 1})
+    df['Passenger_Class'] = df['Passenger_Class'].map({'1st': 1, '2nd': 2, '3rd' : 3})
+    df['Embarked'] = df['Embarked'].map({'Southampton': 0, 'Cherbourg': 1, 'Queenstown': 2})
+    df['Title'] = df['Title'].map({'Mr.': 0, 'Mrs.': 1, 'Miss.': 2, 'Master.': 3, 'Dr.': 4, 'Rev.': 5, 'Other': 6})
     return df
 
 # Visualization function for confidence level
-def visualize_confidence_level(prediction_proba, wine_type):
-    # Define color based on wine type
-    color = '#eeece1' if wine_type == 'white' else '#dc143c'  # Cream or Crimson
+def visualize_confidence_level(prediction_proba):
+    color_palette = sns.color_palette("Set2")
 
     data = (prediction_proba[0] * 100).round(2)
-    grad_percentage = pd.DataFrame(data=data, columns=['Percentage'], index=['Low', 'Ave', 'High'])
-    ax = grad_percentage.plot(kind='barh', figsize=(7, 4), color=color, zorder=10, width=0.5)
-    ax.legend().set_visible(False)
+    grad_percentage = pd.DataFrame(data=data, columns=['Percentage'], index=['Succumbed', 'Survived'])
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    grad_percentage.plot(kind='barh', color=color_palette, ax=ax, zorder=10, width=0.6, edgecolor='black', alpha=0.8)
+
+    ax.legend(["Confidence Level"], loc='upper right')
     ax.set_xlim(xmin=0, xmax=100)
-    
+
+    ax.grid(axis='x', linestyle='--', alpha=0.6)
+    ax.set_facecolor('#f0f0f0')
+
+    ax.set_xlabel("Percentage (%) Confidence Level", labelpad=10, weight='bold', size=12)
+    ax.set_ylabel("Survival", labelpad=10, weight='bold', size=12)
+    ax.set_title('Prediction Confidence Level', fontdict={'fontsize': 16, 'fontweight': 'bold'}, loc='center')
+
+    for index, value in enumerate(grad_percentage['Percentage']):
+        ax.text(value + 2, index, f'{value:.2f}%', va='center', ha='left', color='black', fontsize=10)
+
+    ax.axvline(x=50, linestyle='--', color='gray', alpha=0.8, linewidth=1)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
-    ax.spines['left'].set_visible(True)
-    ax.spines['bottom'].set_visible(True)
 
-    ax.tick_params(axis="both", which="both", bottom="off", top="off", labelbottom="on", left="off", right="off", labelleft="on")
-    
-    vals = ax.get_xticks()
-    for tick in vals:
-        ax.axvline(x=tick, linestyle='dashed', alpha=0.4, color='#eeeeee', zorder=1)
+    plt.tight_layout()
 
-    ax.set_xlabel("Percentage(%) Confidence Level", labelpad=2, weight='bold', size=12)
-    ax.set_ylabel("Wine Quality", labelpad=10, weight='bold', size=12)
-    ax.set_title('Prediction Confidence Level', fontdict=None, loc='center', pad=None, weight='bold')
+    st.pyplot(fig)
 
-    st.pyplot()
+# Streamlit app header with custom CSS
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-color: #10478a;
+    opacity: 0.9;
+    background: linear-gradient(135deg, #1a6abf55 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(225deg, #1a6abf 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(315deg, #1a6abf55 25%, transparent 25%) 0px 0/ 14px 14px, linear-gradient(45deg, #1a6abf 25%, #10478a 25%) 0px 0/ 14px 14px;
+    text-align: center; /* Center-align the text */
+}
 
-# Streamlit app header
-st.write("""
-# Wine Quality Prediction ML Web-App 
-This app predicts the ** Quality of Wine **  using **wine features** input via the **side panel** 
-""")
+h1 {
+    white-space: nowrap;
+}
 
-# Display wine image using Streamlit
-image = Image.open('wine_image.png')
-st.image(image, caption='wine company', use_column_width=True)
+/* Sidebar styling */
+.sidebar .sidebar-content {
+    background-color: #10478a;  /* Match the background color of the main content */
+    color: #ffffff;  /* White text */
+    padding: 20px;
+    border-radius: 10px;
+}
+</style>
+"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+    .header-text {
+        font-size: 48px;
+        color: #ffffff;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<h1 class="header-text">Titanic Survival Prediction</h1>
+<p class="header-text">- Machine Learning Web App -</p>
+<p>This app predicts the <b>Survival of Titanic Passengers</b> using <b>Passenger Characteristics</b> input.</p>
+""", unsafe_allow_html=True)
+
+
+# Display wine image using Streamlit with borders
+image = Image.open('titanic-tragedy-remembrance-concept-free-vector.jpg')
+
+# Add borders to the image
+border_size = 10
+border_color = 'white'
+image_with_borders = Image.new('RGB', (image.width + 2 * border_size, image.height + 2 * border_size), border_color)
+image_with_borders.paste(image, (border_size, border_size))
+
+# Display the image with borders
+st.image(image_with_borders, caption='cartoon image of the Titanic with borders', use_column_width=True)
 
 # Improved User Input Display with Styled Headers and Data Cells
 st.sidebar.title('User Input Parameters')
 
 def get_user_input():
-    wine_type = st.sidebar.selectbox("Select Wine type", ("white", "red"))
-    fixed_acidity = st.sidebar.slider('Fixed Acidity', 3.8, 15.9, 7.0)
-    volatile_acidity = st.sidebar.slider('Volatile Acidity', 0.08, 1.58, 0.4)
-    citric_acid  = st.sidebar.slider('Citric Acid', 0.0, 1.66, 0.3)
-    residual_sugar  = st.sidebar.slider('Residual Sugar', 0.6, 65.8, 10.4)
-    chlorides  = st.sidebar.slider('Chlorides', 0.009, 0.611, 0.211)
-    free_sulfur_dioxide = st.sidebar.slider('Free Sulfur Dioxide', 1, 289, 200)
-    total_sulfur_dioxide = st.sidebar.slider('Total Sulfur Dioxide', 6, 440, 150)
-    density = st.sidebar.slider('Density', 0.98, 1.03, 1.0)
-    pH = st.sidebar.slider('pH', 2.72, 4.01, 3.0)
-    sulphates = st.sidebar.slider('Sulphates', 0.22, 2.0, 1.0)
-    alcohol = st.sidebar.slider('Alcohol', 8.0, 14.9, 13.4)
+    sex = st.sidebar.selectbox("Sex", ("Male", "Female"))
+    passenger_class = st.sidebar.selectbox("Passenger's Class", ('1st', '2nd', '3rd'))
+    age = st.sidebar.slider('Age', 0, 100, 30)
+    total_siblings_and_spouses_aboard = st.sidebar.slider('Total Siblings and Spouses Aboard', 0, 10, 0)
+    total_parents_and_children_aboard = st.sidebar.slider('Total Parents and Children Aboard', 0, 10, 0)
+    fare = st.sidebar.slider('Fare Paid', 0.0, 500.0, 50.0)
+    embarked = st.sidebar.selectbox("Embarked From", ("Cherbourg", "Queenstown", "Southampton"))
+    title = st.sidebar.selectbox("Passenger's Title", ("Mr.", "Mrs.", "Miss.", "Master.", 'Dr.', 'Rev.', "Other"))
     
-    features = {'Wine Type': wine_type,
-                'Fixed Acidity': fixed_acidity,
-                'Volatile Acidity': volatile_acidity,
-                'Citric Acid': citric_acid,
-                'Residual Sugar': residual_sugar,
-                'Chlorides': chlorides,
-                'Free Sulfur Dioxide': free_sulfur_dioxide,
-                'Total Sulfur Dioxide': total_sulfur_dioxide,
-                'Density': density,
-                'pH': pH,
-                'Sulphates': sulphates,
-                'Alcohol': alcohol
-            }
+    features = {
+        'Passenger_Class': passenger_class,
+        'Sex': sex,
+        'Age': age,
+        'total_siblings_and_spouses_aboard': total_siblings_and_spouses_aboard,
+        'total_parents_and_children_aboard': total_parents_and_children_aboard,
+        'Fare': fare,
+        'Embarked': embarked,
+        'Title': title
+    }
+    
     data = pd.DataFrame(features, index=[0])
-
     return data
 
 user_input_df = get_user_input()
 processed_user_input = data_preprocessor(user_input_df)
-
-# Custom styling for the sidebar table
-st.sidebar.subheader('Current User Input:')
-st.sidebar.markdown(
-    """
-    <style>
-        .sidebar-table th { background-color: #2c3e50; color: #ecf0f1; text-align: center; }
-        .sidebar-table td { background-color: #ecf0f1; text-align: center; }
-    </style>
-    """, unsafe_allow_html=True
-)
-# Display the table in the sidebar
-st.sidebar.table(user_input_df.rename_axis(None, axis=1))
-
-st.subheader('User Input parameters:')
-# Display the table in the main content area
-st.table(user_input_df.rename_axis(None, axis=1))
-
 prediction = model.predict(processed_user_input)
-prediction_proba = model.predict_proba(processed_user_input)
+prediction_probability = model.predict_proba(processed_user_input)
 
-wine_type = user_input_df['Wine Type'].values[0]  # Assuming you have 'Wine Type' column in user_input_df
-visualize_confidence_level(prediction_proba, wine_type)
+visualize_confidence_level(prediction_probability)
+# Prediction Outcome Statement
+st.markdown("""
+<style>
+    .prediction-box {
+        
+        border-radius: 5px;
+        text-align: center;
+        font-size: 48px;
+        margin-bottom: 40px;
+        color: #FFFFFF;  /* White */
+        background-color: transparent;
+    }
+    .survive-text {
+        color: #FFD700;  /* Dark yellow */
+        font-size: 36px;
+    }
+    .succumb-text {
+        color: #FF0000;  /* Red */
+        font-size: 36px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+if prediction == 1:
+    st.markdown("""
+    <div class="prediction-box">
+        <p>This passenger is most likely to <b class="survive-text">Survive</b> on the Titanic.</p>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+    <div class="prediction-box">
+        <p>This passenger is more likely to <b class="succumb-text">Succumb</b> to the Titanic.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+# User Input parameters
+st.write("""
+# Defintions
+""")
+
+# Definitions
+st.markdown("""
+<style>
+    .definitions {
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: left;
+        color: black;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="definitions">
+    <b>Survived:</b> This variable indicates whether a passenger survived (1) or did not survive (0).
+    <br>
+    <b>Passenger Class (Pclass):</b> Represents the class of the ticket the passenger purchased (1st, 2nd, 3rd).
+    <br>
+    <b>Sex:</b> Gender of the passenger (Male or Female).
+    <br>
+    <b>Age:</b> Age of the passenger in years.
+    <br>
+    <b>Total Siblings and Spouses Aboard (SibSp):</b> Number of siblings or spouses the passenger had on the Titanic.
+    <br>
+    <b>Total Parents and Children Aboard (Parch):</b> Number of parents or children the passenger had on the Titanic.
+    <br>
+    <b>Fare:</b> Amount of money the passenger paid for the ticket.
+    <br>
+    <b>Embarked:</b> Port where the passenger boarded the Titanic.
+    <br>
+    <b>Title:</b> Used before passengers's name in order to show their status or profession.
+</div>
+""", unsafe_allow_html=True)
+
+
 
