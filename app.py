@@ -8,7 +8,7 @@ from PIL import Image
 import seaborn as sns
 
 # Load the model
-model = joblib.load(open("model-v1.joblib", "rb"))
+model = joblib.load(open("TitanicModel.joblib", "rb"))
 
 # Data preprocessing function
 def data_preprocessor(df):
@@ -58,6 +58,7 @@ page_bg_img = """
     background: linear-gradient(135deg, #1a6abf55 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(225deg, #1a6abf 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(315deg, #1a6abf55 25%, transparent 25%) 0px 0/ 14px 14px, linear-gradient(45deg, #1a6abf 25%, #10478a 25%) 0px 0/ 14px 14px;
     text-align: center; /* Center-align the text */
     color: #ffffff; 
+    font-size: 18px;
 }
 
 h1 {
@@ -175,7 +176,7 @@ else:
 
 # User Input parameters
 st.write("""
-# Defintions
+# Definitions
 """)
 
 # Definitions
@@ -214,30 +215,25 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # How to Use Section
-st.write("""
-## How to Use
+st.markdown("""
+# How to Use
 Welcome to the Titanic Survival Prediction app! This app helps you predict the likelihood of survival for Titanic passengers based on their characteristics. For optimal clarity, have your computer in dark mode.
-""")
 
-# Input Parameters Instructions
-st.write("### Input Parameters:")
-st.write("To make a prediction, follow these steps:")
-st.write("1. Select the passenger's characterisitc using the dropdown menu / sliders on the left.")
-st.write("2. Click on the desired characteristic from the options.")
-st.write("3. Repeat with all desired changes to inputs.")
+### Input Parameters:
+To make a prediction, follow these steps:
+1. Select the passenger's characteristic using the dropdown menu / sliders on the left.
+2. Click on the desired characteristic from the options.
+3. Repeat with all desired changes to inputs.
 
-# Prediction Confidence Level Explanation
-st.write("### Prediction Confidence Level:")
-st.write("The bar chart displays the confidence level of the prediction. The x-axis represents the percentage, and the y-axis indicates whether the passenger is predicted to survive or not.")
+### Prediction Confidence Level:
+The bar chart displays the confidence level of the prediction. The x-axis represents the percentage, and the y-axis indicates whether the passenger is predicted to survive or not.
 
-# Outcome Statement Clarification
-st.write("### Prediction Outcome:")
-st.write("After inputting the parameters, the app will predict whether the passenger is most likely to survive or succumb to the Titanic.")
+### Prediction Outcome:
+After inputting the parameters, the app will predict whether the passenger is most likely to survive or succumb to the Titanic.
 
-# Conclusion
-st.write("""
-## Conclusion
+### Conclusion
 You are now ready to make predictions! Adjust the input parameters, explore the visualizations, and discover the predicted outcomes for Titanic passengers.
 """)
+
 
 
