@@ -8,7 +8,7 @@ from PIL import Image
 import seaborn as sns
 
 # Load the model
-model = joblib.load(open("model-v1.joblib", "rb"))
+model = joblib.load(open("model-v1.joblib","rb"))
 
 # Data preprocessing function
 def data_preprocessor(df):
