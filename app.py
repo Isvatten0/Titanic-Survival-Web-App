@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 import streamlit as st
 from PIL import Image
-import seaborn as sns
+# import seaborn as sns
 
 # Load the model
 model = joblib.load(open("model-v1.joblib","rb"))

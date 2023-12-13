@@ -1,0 +1,38 @@
+1. install git
+
+ https://git-scm.com/download/win
+
+2. install Heroku CLI
+
+https://devcenter.heroku.com/articles/heroku-cli
+
+3. create GitHub repo
+
+4. clone git to your repo
+
+git clone https://github.com/EthanZhu23/wine-example-app.git
+
+5. push changes to your repo
+
+git init
+
+git add *
+
+git commit -m "<your commit message>"
+
+git remote add origin "<your remote repository http link>"
+
+git push -u origin master
+
+6. Log in Heroku and deloy
+
+heroku login
+
+heroku create <yourAppName> --stack heroku-20
+
+heroku git:remote -a <yourAppName>
+
+git remote -v
+
+git push heroku master
+
