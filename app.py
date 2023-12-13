@@ -49,63 +49,63 @@ import seaborn as sns
 
 #     st.pyplot(fig)
 
-# # Streamlit app header with custom CSS
-# page_bg_img = """
-# <style>
-# [data-testid="stAppViewContainer"] {
-#     background-color: #10478a;
-#     opacity: 0.9;
-#     background: linear-gradient(135deg, #1a6abf55 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(225deg, #1a6abf 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(315deg, #1a6abf55 25%, transparent 25%) 0px 0/ 14px 14px, linear-gradient(45deg, #1a6abf 25%, #10478a 25%) 0px 0/ 14px 14px;
-#     text-align: center; /* Center-align the text */
-#     color: #ffffff; 
-#     font-size: 18px;
-# }
+# Streamlit app header with custom CSS
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-color: #10478a;
+    opacity: 0.9;
+    background: linear-gradient(135deg, #1a6abf55 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(225deg, #1a6abf 25%, transparent 25%) -7px 0/ 14px 14px, linear-gradient(315deg, #1a6abf55 25%, transparent 25%) 0px 0/ 14px 14px, linear-gradient(45deg, #1a6abf 25%, #10478a 25%) 0px 0/ 14px 14px;
+    text-align: center; /* Center-align the text */
+    color: #ffffff; 
+    font-size: 18px;
+}
 
-# h1 {
-#     white-space: nowrap;
-# }
+h1 {
+    white-space: nowrap;
+}
 
-# /* Sidebar styling */
-# .sidebar .sidebar-content {
-#     background-color: #10478a;  /* Match the background color of the main content */
-#     color: #ffffff;  /* White text */
-#     padding: 20px;
-#     border-radius: 10px;
-# }
-# </style>
-# """
-# st.markdown(page_bg_img, unsafe_allow_html=True)
+/* Sidebar styling */
+.sidebar .sidebar-content {
+    background-color: #10478a;  /* Match the background color of the main content */
+    color: #ffffff;  /* White text */
+    padding: 20px;
+    border-radius: 10px;
+}
+</style>
+"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# st.markdown("""
-# <style>
-#     .header-text {
-#         font-size: 48px;
-#         color: #ffffff;
-#     }
-# </style>
-# """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+    .header-text {
+        font-size: 48px;
+        color: #ffffff;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-# st.markdown("""
+st.markdown("""
 # <h1 class="header-text">Titanic Survival Prediction</h1>
 # <p class="header-text">- Machine Learning Web App -</p>
 # <p>This app predicts the <b>Survival of Titanic Passengers</b> using <b>Passenger Characteristics</b> input.</p>
 # """, unsafe_allow_html=True)
 
 
-# # Display wine image using Streamlit with borders
-# image = Image.open('titanic-tragedy-remembrance-concept-free-vector.jpg')
+# Display wine image using Streamlit with borders
+image = Image.open('titanic-tragedy-remembrance-concept-free-vector.jpg')
 
-# # Add borders to the image
-# border_size = 10
-# border_color = 'white'
-# image_with_borders = Image.new('RGB', (image.width + 2 * border_size, image.height + 2 * border_size), border_color)
-# image_with_borders.paste(image, (border_size, border_size))
+# Add borders to the image
+border_size = 10
+border_color = 'white'
+image_with_borders = Image.new('RGB', (image.width + 2 * border_size, image.height + 2 * border_size), border_color)
+image_with_borders.paste(image, (border_size, border_size))
 
-# # Display the image with borders
-# st.image(image_with_borders, caption='cartoon image of the Titanic with borders', use_column_width=True)
+# Display the image with borders
+st.image(image_with_borders, caption='cartoon image of the Titanic with borders', use_column_width=True)
 
-# # Improved User Input Display with Styled Headers and Data Cells
-# st.sidebar.title('User Input Parameters')
+# Improved User Input Display with Styled Headers and Data Cells
+st.sidebar.title('User Input Parameters')
 
 # def get_user_input():
 #     sex = st.sidebar.selectbox("Sex", ("Male", "Female"))
