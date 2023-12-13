@@ -1,9 +1,9 @@
+import streamlit as st
 import joblib
 import matplotlib.pyplot as plt
 import pandas as pd
 from PIL import Image
-import seaborn as sns
-import streamlit as st
+
 
 # Load the model
 model = joblib.load(open('model.joblib','rb'))
@@ -18,13 +18,12 @@ def data_preprocessor(df):
 
 # Visualization function for confidence level
 def visualize_confidence_level(prediction_proba):
-    color_palette = sns.color_palette("Set2")
 
     data = (prediction_proba[0] * 100).round(2)
     grad_percentage = pd.DataFrame(data=data, columns=['Percentage'], index=['Succumbed', 'Survived'])
 
     fig, ax = plt.subplots(figsize=(8, 5))
-    grad_percentage.plot(kind='barh', color=color_palette, ax=ax, zorder=10, width=0.6, edgecolor='black', alpha=0.8)
+    grad_percentage.plot(kind='barh', color='#46E2f9', ax=ax, zorder=10, width=0.6, edgecolor='black', alpha=0.8)
 
     ax.legend(["Confidence Level"], loc='upper right')
     ax.set_xlim(xmin=0, xmax=100)
