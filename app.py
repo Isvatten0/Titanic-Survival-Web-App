@@ -1,14 +1,12 @@
-import numpy as np 
-import pandas as pd 
 import joblib
 import matplotlib.pyplot as plt
-from matplotlib.ticker import StrMethodFormatter
-import streamlit as st
+import pandas as pd
 from PIL import Image
 import seaborn as sns
+import streamlit as st
 
 # Load the model
-model = joblib.load(open('model-v1.joblib','rb'))
+model = joblib.load(open('model.joblib','rb'))
 
 # Data preprocessing function
 def data_preprocessor(df):
