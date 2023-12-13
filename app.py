@@ -227,23 +227,26 @@ st.markdown("""
 # How to Use Section
 st.markdown("""
 # How to Use
-Welcome to the Titanic Survival Prediction app! This app helps you predict the likelihood of survival for Titanic passengers based on their characteristics. For optimal clarity, have your computer in dark mode.
 
-### Input Parameters:
+Welcome to the Titanic Survival Prediction app! This app assists you in predicting the likelihood of survival for Titanic passengers based on their characteristics. For optimal clarity, ensure your computer is in dark mode.
+
+## Input Parameters:
+
 To make a prediction, follow these steps:
-1. Select the passenger's characteristic using the dropdown menu / sliders on the left.
-2. Click on the desired characteristic from the options.
-3. Repeat with all desired changes to inputs.
+1. Use the dropdown menu or sliders on the left to select the passenger's characteristics.
+2. Click on the desired characteristic from the available options.
+3. Repeat these steps for all the desired changes to inputs.
 
-### Prediction Confidence Level:
-The bar chart displays the confidence level of the prediction. The x-axis represents the percentage, and the y-axis indicates whether the passenger is predicted to survive or not.
+## Prediction Confidence Level:
 
-### Prediction Outcome:
+Explore the bar chart to understand the confidence level of the prediction. The x-axis represents the percentage, and the y-axis indicates whether the passenger is predicted to survive or not.
+
+## Prediction Outcome:
+
 After inputting the parameters, the app will predict whether the passenger is most likely to survive or succumb to the Titanic.
 
-### Conclusion
-You are now ready to make predictions! Adjust the input parameters, explore the visualizations, and discover the predicted outcomes for Titanic passengers.
+## Conclusion:
+
+You are now prepared to make predictions! Adjust the input parameters, explore the visualizations, and discover the predicted outcomes for Titanic passengers.
 """)
-
-
 
