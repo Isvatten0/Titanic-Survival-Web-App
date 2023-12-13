@@ -6,8 +6,9 @@ Welcome to the Titanic Survival Prediction Web App! This repository contains the
 
 1. **Run the App Locally:**
    - Execute the command `streamlit run app.py` to run the app locally.
+   - Go to https://cs451app.streamlit.app/ to run the app on the web.
 
-2. **Install Required Libraries:**
+2. **Install Required Libraries (If Runnning Locally):**
    - Ensure you have the required libraries installed by running:
      ```bash
      pip install -r requirements.txt
@@ -18,7 +19,7 @@ Welcome to the Titanic Survival Prediction Web App! This repository contains the
      ```
 
 3. **Python Version:**
-   - The code is designed to run in Python 3.8.13. Ensure you have the appropriate Python version installed.
+   - The code is designed to run in Python 3.10.4. Ensure you have the appropriate Python version installed.
 
 4. **User Input Section:**
    - Utilize the sidebar to input specific passenger characteristics: sex, passenger class, age, total siblings and spouses aboard, total parents and children aboard, fare, embarked port, and passenger title.
