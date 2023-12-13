@@ -6,7 +6,7 @@ from PIL import Image
 
 
 # Load the model
-model = joblib.load(open('model.joblib','rb'))
+model = joblib.load('model.joblib')
 
 # Data preprocessing function
 def data_preprocessor(df):
