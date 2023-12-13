@@ -15,10 +15,13 @@ current_directory = os.path.abspath(os.getcwd())
 # Specify the absolute path to the model file
 absolute_model_path = os.path.join(current_directory, model_path)
 # Load the model
-try:
+if os.path.exists(absolute_model_path):
+    # Load the model
     model = joblib.load(absolute_model_path)
-except Exception as e:
-    print(f"Error loading the model: {e}")
+    st.sidebar.success("Model loaded successfully.")
+else:
+    st.sidebar.error(f"Error: The model file '{model_path}' does not exist in the specified path.")
+    st.stop()  # Stop the Streamlit app if the model file is not found
 
 
 # Data preprocessing function
