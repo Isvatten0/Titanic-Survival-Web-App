@@ -3,10 +3,23 @@ import joblib
 import matplotlib.pyplot as plt
 import pandas as pd
 from PIL import Image
+import os
 
 
+# Specify the path to the model file (relative to the current working directory)
+model_path = 'model.joblib'
+
+# Get the absolute path to the current working directory
+current_directory = os.path.abspath(os.getcwd())
+
+# Specify the absolute path to the model file
+absolute_model_path = os.path.join(current_directory, model_path)
 # Load the model
-model = joblib.load('model.joblib')
+try:
+    model = joblib.load(absolute_model_path)
+except Exception as e:
+    print(f"Error loading the model: {e}")
+
 
 # Data preprocessing function
 def data_preprocessor(df):
